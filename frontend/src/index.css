@@ -1,0 +1,195 @@
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800;900&family=Noto+Sans:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design Tokens ──────────────────────────────── */
+:root {
+  --blood:        #c0392b;
+  --blood-bright: #e74c3c;
+  --blood-glow:   #ff6b6b;
+  --gold:         #f0c040;
+  --emerald:      #2ecc71;
+  --ocean:        #3b82f6;
+  --bg-deep:      #0a0303;
+  --bg-dark:      #120505;
+  --bg-card:      rgba(26, 8, 8, 0.6);
+  --border-subtle:rgba(192, 57, 43, 0.2);
+  --border-hover: rgba(231, 76, 60, 0.55);
+}
+
+/* ── Base ───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Noto Sans', system-ui, sans-serif;
+  background-color: var(--bg-deep);
+  background-image: radial-gradient(ellipse 90% 55% at 50% -10%, rgba(192,57,43,0.18) 0%, transparent 70%);
+  color: #f0e8e8;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Scrollbar ──────────────────────────────────── */
+::-webkit-scrollbar        { width: 6px; height: 6px; }
+::-webkit-scrollbar-track  { background: #0a0303; }
+::-webkit-scrollbar-thumb  { background: rgba(192,57,43,0.5); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #e74c3c; }
+
+/* ── Focus ring ─────────────────────────────────── */
+:focus-visible { outline: 3px solid rgba(231,76,60,0.7); outline-offset: 2px; border-radius: 4px; }
+
+/* ── Typography ─────────────────────────────────── */
+h1,h2,h3,h4,h5,h6 { font-family: 'Figtree', system-ui, sans-serif; font-weight: 700; line-height: 1.2; }
+
+/* ── Glass Card ─────────────────────────────────── */
+@layer components {
+  .glass-card {
+    @apply rounded-2xl border;
+    background: var(--bg-card);
+    border-color: var(--border-subtle);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: border-color 200ms, box-shadow 200ms, transform 200ms;
+  }
+  .glass-card:hover {
+    border-color: var(--border-hover);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(231,76,60,0.1);
+  }
+
+  /* Blood Group Badge */
+  .bg-badge {
+    @apply inline-flex items-center justify-center font-heading font-bold rounded-full text-white;
+    background: linear-gradient(135deg, #c0392b, #7b241c);
+    box-shadow: 0 2px 8px rgba(192,57,43,0.4);
+  }
+
+  /* Tier result card */
+  .result-card {
+    @apply glass-card p-5;
+    border-left: 4px solid var(--blood-bright);
+  }
+
+  /* Verified badge */
+  .tag-verified {
+    @apply text-xs font-semibold px-2 py-0.5 rounded-full;
+    background: rgba(46,204,113,0.15);
+    color: #2ecc71;
+    border: 1px solid rgba(46,204,113,0.3);
+  }
+  .tag-pending {
+    @apply text-xs font-semibold px-2 py-0.5 rounded-full;
+    background: rgba(240,192,64,0.15);
+    color: #f0c040;
+    border: 1px solid rgba(240,192,64,0.3);
+  }
+  .tag-critical {
+    @apply text-xs font-semibold px-2 py-0.5 rounded-full;
+    background: rgba(231,76,60,0.2);
+    color: #ff6b6b;
+    border: 1px solid rgba(231,76,60,0.35);
+  }
+
+  /* Progress bar */
+  .progress-wrap {
+    @apply w-full rounded-full overflow-hidden;
+    height: 10px;
+    background: rgba(255,255,255,0.06);
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, #c0392b, #e74c3c, #ff6b6b);
+    transition: width 800ms cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* Input */
+  .bs-input {
+    @apply w-full rounded-xl px-4 py-3 text-sm text-white placeholder-white/30
+           transition-colors duration-200;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .bs-input:focus {
+    outline: none;
+    border-color: rgba(231,76,60,0.6);
+    background: rgba(255,255,255,0.06);
+  }
+
+  /* Select */
+  .bs-select {
+    @apply bs-input cursor-pointer appearance-none;
+  }
+  .bs-select option { background: #1a0505; color: #f0e8e8; }
+
+  /* WhatsApp message box */
+  .wa-box {
+    @apply rounded-xl p-4 text-sm font-mono whitespace-pre-wrap leading-relaxed;
+    background: rgba(37,211,102,0.06);
+    border: 1px solid rgba(37,211,102,0.25);
+    color: #a8f5c0;
+  }
+
+  /* Section header */
+  .sec-header {
+    @apply text-3xl font-heading font-bold;
+    background: linear-gradient(135deg, #fff 0%, #ff6b6b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+/* ── Animations ─────────────────────────────────── */
+@keyframes pulse-border {
+  0%,100% { box-shadow: 0 0 0 0 rgba(231,76,60,0.4); }
+  50%      { box-shadow: 0 0 0 8px rgba(231,76,60,0); }
+}
+.sos-pulse { animation: pulse-border 2s ease-in-out infinite; }
+
+@keyframes slide-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.slide-in { animation: slide-in 0.4s ease both; }
+
+@keyframes heartbeat {
+  0%,100% { transform: scale(1); }
+  14%     { transform: scale(1.12); }
+  28%     { transform: scale(1); }
+  42%     { transform: scale(1.08); }
+  70%     { transform: scale(1); }
+}
+.heartbeat { animation: heartbeat 1.8s ease-in-out infinite; }
+
+/* ── Leaflet overrides ──────────────────────────── */
+.leaflet-container { border-radius: 1rem; }
+.leaflet-popup-content-wrapper {
+  background: #1a0505 !important;
+  border: 1px solid rgba(231,76,60,0.35) !important;
+  color: #f0e8e8 !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6) !important;
+}
+.leaflet-popup-tip { background: #1a0505 !important; }
+
+/* ── Tab styling ────────────────────────────────── */
+.tab-btn {
+  @apply px-4 py-2.5 text-sm font-medium rounded-lg cursor-pointer transition-all duration-200;
+  color: rgba(255,255,255,0.5);
+  background: transparent;
+  border: none;
+}
+.tab-btn:hover { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.05); }
+.tab-btn.active {
+  color: #fff;
+  background: linear-gradient(135deg, rgba(192,57,43,0.3), rgba(231,76,60,0.2));
+  border: 1px solid rgba(231,76,60,0.4);
+}
+
+/* ── Reduced motion ─────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
