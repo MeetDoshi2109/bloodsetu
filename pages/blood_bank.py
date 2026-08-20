@@ -15,13 +15,13 @@ from fraud import show_report_button
 
 def show():
     st.markdown("""
-    <div class='sec-header'>🏦 Blood Bank Portal</div>
-    <p class='sec-sub'>Manage your blood bank profile, availability and donor slots</p>
+    <div class='sec-header'>🏦 Blood Bank Operations Portal</div>
+    <p class='sec-sub'>Manage blood inventory groups, confirm donor slots, and schedule community drives.</p>
     """, unsafe_allow_html=True)
 
     if not require_login("blood_bank"):
-        st.markdown("---")
-        st.markdown("### 📝 Register Your Blood Bank")
+        st.markdown("<div class='bs-divider'></div>", unsafe_allow_html=True)
+        st.markdown("### 📝 Blood Bank Facility Registration")
         _register_flow()
         return
 
@@ -43,18 +43,18 @@ def show():
     if not bank["is_verified"]:
         st.warning(
             "⏳ Your blood bank registration is **pending admin verification**. "
-            "You will be visible on BloodSetu once approved."
+            "You will be listed once approved."
         )
         return
 
-    st.success(f"✅ Verified Blood Bank — Welcome, **{bank['name']}**!")
+    st.success(f"✅ Verified Blood Bank — **{bank['name']}**")
 
     tab1, tab2, tab3, tab4, tab5 = st.tabs([
-        "🩸 Availability",
-        "📅 Donor Slots",
-        "🔍 Find Donors",
-        "📣 Announce Event",
-        "🚩 Reports",
+        "🩸 Inventory Status",
+        "📅 Scheduled Donor Slots",
+        "🔍 Regional Donors",
+        "📣 Broadcast Drive",
+        "🚩 Fraud Reporting",
     ])
 
     with tab1:
@@ -70,29 +70,27 @@ def show():
 
 
 def _availability_tab(bank):
-    st.markdown("### 🩸 Update Blood Availability")
+    st.markdown("### 🩸 Update Stock Availability")
 
     if bank.get("last_updated"):
         last = date.fromisoformat(bank["last_updated"])
         days_since = (date.today() - last).days
         if days_since > 15:
-            st.error(
-                f"⚠️ Last updated **{days_since} days ago**. "
-                "Please update your availability — it may be outdated!"
-            )
+            st.error(f"⚠️ Inventory last updated **{days_since} days ago**. Please update current stock.")
         else:
             st.info(f"Last updated: **{bank['last_updated']}** ({days_since} days ago)")
 
     current = bank.get("groups_available", "") or ""
     current_groups = [g.strip() for g in current.split(",") if g.strip()]
 
+    st.markdown("<div class='form-glass'>", unsafe_allow_html=True)
     available = st.multiselect(
-        "Blood groups currently in stock:",
+        "Select blood groups currently stocked in inventory:",
         ALL_BLOOD_GROUPS,
         default=current_groups
     )
 
-    if st.button("💾 Update Availability", use_container_width=True):
+    if st.button("💾 Save Blood Bank Stock", use_container_width=True):
         from database import get_conn
         conn = get_conn()
         today = date.today().isoformat()
@@ -102,12 +100,13 @@ def _availability_tab(bank):
         )
         conn.commit()
         conn.close()
-        st.success("✅ Availability updated!")
+        st.success("✅ Stock levels updated!")
         st.rerun()
+    st.markdown("</div>", unsafe_allow_html=True)
 
 
 def _slots_tab(bank):
-    st.markdown("### 📅 Donor Slots")
+    st.markdown("### 📅 Booked Donor Slots")
 
     from database import get_conn
     conn = get_conn()
@@ -123,26 +122,25 @@ def _slots_tab(bank):
     conn.close()
 
     if not slots:
-        st.info("No donor slots booked yet.")
+        st.info("No donor slots currently booked.")
         return
 
-    st.markdown(f"**{len(slots)} upcoming slot(s):**")
     for slot in [dict(s) for s in slots]:
         col1, col2 = st.columns([3, 1])
         with col1:
             st.markdown(f"""
             <div class='bs-card'>
-              <p style='font-weight:600;color:white;margin:0 0 4px'>
-              🩸 {slot["donor_name"]} — {slot["blood_group"]}</p>
+              <p style='font-weight:700;color:white;margin:0 0 4px;font-size:15px'>
+              🩸 {slot["donor_name"]} — <span style='color:#e74c3c'>{slot["blood_group"]}</span></p>
               <p style='font-size:12px;color:rgba(255,255,255,0.5);margin:0'>
-              📅 {slot["slot_date"]} · ⏰ {slot["slot_time"]}</p>
+              📅 Date: {slot["slot_date"]} · ⏰ Time: {slot["slot_time"]}</p>
               <p style='font-size:12px;color:#f0c040;margin:4px 0 0'>
-              📞 {slot["donor_phone"]} · 📍 {slot["donor_area"]}</p>
+              📞 Phone: {slot["donor_phone"]} · 📍 Area: {slot["donor_area"]}</p>
             </div>
             """, unsafe_allow_html=True)
         with col2:
             if slot["status"] == "Pending":
-                if st.button("✅ Mark Done", key=f"bank_done_{slot['id']}"):
+                if st.button("✅ Confirm Donation", key=f"bank_done_{slot['id']}"):
                     confirm_donation(
                         slot["donor_id"], "Blood Bank",
                         bank["id"], bank["name"]
@@ -152,10 +150,10 @@ def _slots_tab(bank):
 
 
 def _find_donors_tab(bank):
-    st.markdown("### 🔍 Find Eligible Donors")
+    st.markdown("### 🔍 Search Regional Donors")
     col1, col2 = st.columns(2)
     with col1:
-        bg = st.selectbox("Blood Group", ALL_BLOOD_GROUPS, key="bb_find_bg")
+        bg = st.selectbox("Blood Group Needed", ALL_BLOOD_GROUPS, key="bb_find_bg")
     with col2:
         city = st.selectbox(
             "City", GUJARAT_CITIES,
@@ -176,21 +174,19 @@ def _find_donors_tab(bank):
                 <div class='result-card'>
                   <h4>🩸 {d["name"]} — {d["blood_group"]}</h4>
                   <p>📍 {d["area"]}, {d["city"]}</p>
-                  <p style='color:#f0c040'>📞 {d["phone"]}</p>
+                  <p style='color:#f0c040;font-size:14px !important;font-weight:700'>📞 Contact: {d["phone"]}</p>
                 </div>
                 """, unsafe_allow_html=True)
         else:
-            st.warning("No eligible donors found right now.")
+            st.warning("No eligible donors found.")
 
 
 def _announce_tab(bank):
-    st.markdown("### 📣 Announce Blood Donation Drive")
+    st.markdown("### 📣 Generate Donation Drive Announcement")
     with st.form("bb_announce_form"):
-        event_date = st.date_input("📅 Event Date", min_value=date.today())
-        timings    = st.text_input("⏰ Timings", placeholder="e.g. 10AM – 3PM")
-        submitted  = st.form_submit_button(
-            "📣 Generate WhatsApp Message", use_container_width=True
-        )
+        event_date = st.date_input("📅 Drive Date", min_value=date.today())
+        timings    = st.text_input("⏰ Drive Timings", placeholder="e.g. 10AM – 3PM")
+        submitted  = st.form_submit_button("📣 Generate WhatsApp Broadcast", use_container_width=True)
 
     if submitted:
         msg = wa_event_message(
@@ -198,8 +194,9 @@ def _announce_tab(bank):
             str(event_date), timings,
             bank.get("doctor_name", "Bank Team"), bank["phone"]
         )
+        st.markdown("<div class='wa-box'>", unsafe_allow_html=True)
         st.code(msg, language=None)
-        st.caption("Copy and share on WhatsApp")
+        st.markdown("</div>", unsafe_allow_html=True)
 
 
 def _register_flow():
@@ -209,21 +206,21 @@ def _register_flow():
 
 
 def _complete_profile(user_id):
-    st.markdown("### 🏦 Complete Blood Bank Profile")
+    st.markdown("<div class='form-glass'>", unsafe_allow_html=True)
+    st.markdown("### 🏦 Complete Blood Bank Registration")
     with st.form("bb_profile_form"):
-        name   = st.text_input("Blood Bank Name *")
-        doctor = st.text_input("Director / Doctor Name *")
+        name   = st.text_input("Blood Bank Facility Name *")
+        doctor = st.text_input("Director / Contact Person Name *")
         city   = st.selectbox("City *", GUJARAT_CITIES)
         areas  = get_areas(city)
         area   = st.selectbox("Area *", areas if areas else ["—"])
-        phone  = st.text_input("Contact Number *")
+        phone  = st.text_input("Official Phone Number *")
 
-        if st.form_submit_button("📝 Submit for Verification", use_container_width=True):
+        if st.form_submit_button("📝 Submit Registration", use_container_width=True):
             if name and doctor and phone:
                 register_blood_bank(user_id, name, doctor, city, area, phone)
-                st.success(
-                    "✅ Registration submitted! Admin will verify within 24–48 hours."
-                )
+                st.success("✅ Facility registration submitted! Pending admin approval.")
+                st.rerun()
             else:
                 st.warning("Please fill all required fields.")
-                
+    st.markdown("</div>", unsafe_allow_html=True)
