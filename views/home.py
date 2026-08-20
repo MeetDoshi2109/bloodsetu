@@ -1,5 +1,5 @@
 """
-pages/home.py — BloodSetu Homepage
+views/home.py — BloodSetu Homepage
 Split screen hero, search, stats, tier flow, Daata Wall preview, analytics strip
 """
 
@@ -41,8 +41,7 @@ def show():
         st.markdown("""
         <div style='text-align:left;margin-bottom:12px'>
         <svg width='95' height='114' viewBox='0 0 80 96' fill='none'
-             style='animation:float 3.5s ease-in-out infinite;
-             filter:drop-shadow(0 0 24px rgba(231,76,60,0.75))'>
+             style='filter:drop-shadow(0 0 24px rgba(231,76,60,0.75))'>
           <path d='M40 8C40 8 8 44 8 64C8 82 22 88 40 88C58 88 72 82 72 64C72 44 40 8 40 8Z'
                 fill='url(#mg)'/>
           <circle cx='30' cy='60' r='6' fill='white' opacity='.95'/>
@@ -68,7 +67,7 @@ def show():
         </svg></div>
         """, unsafe_allow_html=True)
 
-        # Gradient title & rotating bilingual quote
+        # Title & Quote
         q = random.choice(QUOTES)
         st.markdown(f"""
         <div style='margin-bottom:20px'>
@@ -79,7 +78,7 @@ def show():
         </div>
 
         <div style='border-left:3px solid #e74c3c;padding-left:16px;margin-bottom:24px;background:rgba(255,255,255,0.02);padding-top:8px;padding-bottom:8px;border-radius:0 10px 10px 0'>
-          <p style='font-family:"Playfair Display",serif;font-size:20px;
+          <p style='font-family:"Playfair Display",serif;font-size:19px;
                     font-weight:700;color:white;margin:0;line-height:1.4'>
             "{q["en"]}"
           </p>
@@ -106,13 +105,12 @@ def show():
 
     with right:
         st.markdown("""
-        <div class='form-glass'>
         <h2 style='font-family:"Playfair Display",serif;font-size:22px;
                    color:white;margin-bottom:4px;display:flex;align-items:center;gap:8px'>
           🔍 Quick Search
         </h2>
         <p style='font-size:12px;color:rgba(255,255,255,0.5);
-                  margin-bottom:18px'>No login required for seekers. Find immediate help.</p>
+                  margin-bottom:14px'>No login required for seekers. Find immediate help.</p>
         """, unsafe_allow_html=True)
 
         with st.form("home_search_form"):
@@ -148,8 +146,6 @@ def show():
                 "🔍 Search Gujarat Blood Network",
                 use_container_width=True
             )
-
-        st.markdown("</div>", unsafe_allow_html=True)
 
         if submitted:
             if not confirm_loc:

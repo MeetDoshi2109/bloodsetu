@@ -18,10 +18,14 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Export handler for serverless platforms like Vercel
-app = st
-application = st
-handler = st
+# Export top-level WSGI handler for serverless platforms like Vercel
+def handler(environ, start_response):
+    start_response('200 OK', [('Content-Type', 'text/html; charset=utf-8')])
+    return [b"<h1>BloodSetu Portal</h1>"]
+
+app = handler
+application = handler
+
 
 # ── LOAD CSS ───────────────────────────────────────────────
 css_path = os.path.join("assets", "styles.css")
