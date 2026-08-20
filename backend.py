@@ -174,11 +174,13 @@ def login(req: LoginReq):
     user = login_user(req.username, req.password)
     if not user:
         raise HTTPException(status_code=401, detail="Invalid credentials or account blocked")
-    tok = make_token(user)
+    # Remove password hash from response for security
+    safe_user = {k: v for k, v in user.items() if k != "password"}
+    tok = make_token(safe_user)
     donor_data = None
-    if user["role"] == "donor":
-        donor_data = get_donor_by_user(user["id"])
-    return {"token": tok, "user": user, "donor_data": donor_data}
+    if safe_user["role"] == "donor":
+        donor_data = get_donor_by_user(safe_user["id"])
+    return {"token": tok, "user": safe_user, "donor_data": donor_data}
 
 @app.post("/api/auth/register")
 def register(req: RegisterReq):

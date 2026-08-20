@@ -257,6 +257,52 @@ def seed_sample_data():
                 (organizer,doctor_name,city,area,phone,camp_date,timings,is_verified)
                 VALUES (?,?,?,?,?,?,?,1)""", camp)
 
+    # seed monthly donation trend data if empty
+    c.execute("SELECT COUNT(*) FROM donations")
+    if c.fetchone()[0] == 0:
+        today = date.today()
+        donor_names = ["Rahul Shah", "Priya Mehta", "Amit Patel", "Sneha Joshi",
+                       "Dev Raval", "Kavya Desai", "Rohan Trivedi", "Hiral Modi",
+                       "Tanvi Shah", "Kiran Patel", "Chirag Sharma", "Juhi Kapadia",
+                       "Manav Patel", "Riya Shah", "Parth Vyas"]
+        blood_groups = ["A+","A-","B+","B-","O+","O-","AB+","AB-"]
+        hospitals_map = {
+            "Vadodara": ["SSG Hospital", "Sterling Hospital"],
+            "Surat":    ["Kiran Hospital"],
+            "Ahmedabad":["Civil Hospital Ahmedabad"],
+            "Rajkot":   ["Rajkot Civil Hospital"],
+        }
+
+        monthly_counts = [18, 24, 22, 30, 28, 35, 32, 40, 38, 45, 42, 50]
+
+        for month_offset in range(11, -1, -1):
+            month_date = today - timedelta(days=30 * month_offset + 5)
+            first_of_month = month_date.replace(day=1)
+            donation_count = monthly_counts[11 - month_offset]
+
+            for i in range(donation_count):
+                donor_idx = (month_offset * 7 + i * 3) % len(donor_names)
+                bg_idx    = (month_offset * 5 + i * 2) % len(blood_groups)
+                cities    = list(hospitals_map.keys())
+                city_idx  = (month_offset * 3 + i) % len(cities)
+                city      = cities[city_idx]
+                hospitals = hospitals_map[city]
+                hname     = hospitals[(month_offset + i) % len(hospitals)]
+                d_day     = 1 + ((month_offset * 7 + i * 3) % 27)
+                try:
+                    d_date = first_of_month.replace(day=min(d_day, 28)).isoformat()
+                except:
+                    d_date = first_of_month.isoformat()
+                units = 1 if (i % 5 != 0) else 2
+                donor_id = (donor_idx % 10) + 1 if (donor_idx % 10) < 10 else None
+                donor_nm = donor_names[donor_idx]
+                bg = blood_groups[bg_idx]
+                c.execute("""INSERT INTO donations
+                    (donor_id,donor_name,blood_group,hospital_name,donation_date,units,remarks,recorded_by)
+                    VALUES (?,?,?,?,?,?,?,?)""",
+                    (donor_id, donor_nm, bg, hname, d_date, units,
+                     "Routine voluntary donation", "seed_bootstrap"))
+
     conn.commit()
     conn.close()
 

@@ -34,17 +34,20 @@ GUJARAT_AREAS = {
     "Ahmedabad": [
         "Satellite", "Bopal", "Maninagar", "Vastrapur", "Navrangpura",
         "SG Highway", "Gota", "Chandkheda", "Prahlad Nagar", "Thaltej",
-        "Ambawadi", "Paldi", "Ellis Bridge", "Shahibaug", "Nikol"
+        "Ambawadi", "Paldi", "Ellis Bridge", "Shahibaug", "Nikol",
+        "Asarwa", "Bapunagar", "Rakhial", "Sarkhej", "Makarba"
     ],
     "Vadodara": [
         "Alkapuri", "Fatehgunj", "Manjalpur", "Gotri", "Waghodia Road",
         "Karelibaug", "Atladra", "Sama", "Sayajigunj", "Raopura",
-        "Race Course", "Akota", "Vasna", "Gorwa", "Harni"
+        "Race Course", "Akota", "Vasna", "Gorwa", "Harni",
+        "Waghodia", "Vadodara City", "Laxmipura", "Sevasi", "Ajwa Road"
     ],
     "Surat": [
         "Adajan", "Vesu", "Citylight", "Katargam", "Udhna",
         "Piplod", "Bhatar", "Varachha", "Althan", "Athwa",
-        "Palanpur Patia", "Pal", "Dumas", "Kamrej", "Sachin"
+        "Palanpur Patia", "Pal", "Dumas", "Kamrej", "Sachin",
+        "Nanpura", "Rander", "Majura Gate", "Limbayat", "Utran"
     ],
     "Rajkot": [
         "Kalawad Road", "150 Feet Ring Road", "University Road",

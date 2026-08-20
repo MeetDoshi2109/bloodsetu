@@ -234,6 +234,8 @@ function PlatformDB() {
       api.get('/admin/all-camps'),
     ]).then(([d, h, b, c]) => {
       setDonors(d.data); setHospitals(h.data); setBanks(b.data); setCamps(c.data)
+    }).catch(() => {
+      setDonors([]); setHospitals([]); setBanks([]); setCamps([])
     }).finally(() => setLoading(false))
   }, [])
 

@@ -95,13 +95,13 @@ function DonorRegistration({ onDone }) {
           <option value="">Select Blood Group</option>
           {['A+','A-','B+','B-','O+','O-','AB+','AB-'].map(g => <option key={g}>{g}</option>)}
         </Select>
-        <Select label="City" value={prof.city} onChange={e => setProf(p => ({...p, city: e.target.value}))} required>
+        <Select label="City" value={prof.city} onChange={e => handleProfCity(e.target.value)} required>
           <option value="">Select City</option>
-          {cities.map(c => <option key={c}>{c}</option>)}
+          {GUJARAT_CITIES.map(c => <option key={c}>{c}</option>)}
         </Select>
-        <Select label="Area" value={prof.area} onChange={e => setProf(p => ({...p, area: e.target.value}))} required disabled={!areas.length}>
+        <Select label="Area" value={prof.area} onChange={e => setProf(p => ({...p, area: e.target.value}))} required disabled={!profAreas.length}>
           <option value="">Select Area</option>
-          {areas.map(a => <option key={a}>{a}</option>)}
+          {profAreas.map(a => <option key={a}>{a}</option>)}
         </Select>
         <Input label="Phone" value={prof.phone} onChange={e => setProf(p => ({...p, phone: e.target.value}))} maxLength={10} required />
         {err && <Alert type="error" message={err} />}
