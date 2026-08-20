@@ -47,6 +47,7 @@ function DonorRegistration({ onDone }) {
     if (!res.ok) { setErr(res.message); setLoading(false); return }
     const loginRes = await login(acct.username, acct.password)
     if (!loginRes.ok) { setErr('Account created but login failed. Please sign in.'); setLoading(false); return }
+    setProf(p => ({ ...p, phone: acct.phone }))
     setLoading(false); setStep('profile')
   }
 
