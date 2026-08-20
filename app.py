@@ -18,11 +18,10 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# Export handler / app variable for serverless deployment
+# Export handler for serverless platforms like Vercel
 app = st
 application = st
 handler = st
-
 
 # ── LOAD CSS ───────────────────────────────────────────────
 css_path = os.path.join("assets", "styles.css")
@@ -34,13 +33,31 @@ if os.path.exists(css_path):
 init_db()
 init_session()
 
+# ── NAVIGATION CONFIG ──────────────────────────────────────
+PAGES = {
+    "🏠 Home":              "Home",
+    "🔍 Find Blood":        "Find Blood",
+    "✅ Eligibility Check": "Eligibility",
+    "🗺️ Map View":          "Map",
+    "📊 Analytics":         "Analytics",
+    "🏆 Daata Wall":        "Daata Wall",
+    "🩸 Donor Portal":      "Donor",
+    "🏥 Hospital Portal":   "Hospital",
+    "🏦 Blood Bank Portal": "Blood Bank",
+    "🏕️ Blood Camp Portal": "Camp",
+    "👑 Admin Panel":       "Admin",
+}
+
+if "current_page" not in st.session_state:
+    st.session_state.current_page = "Home"
+
 # ── SIDEBAR NAVIGATION ─────────────────────────────────────
 with st.sidebar:
-    # Logo + mascot with glowing animation
+    # Logo & Mascot
     st.markdown("""
-    <div style='text-align:center;padding:16px 0 12px'>
-      <svg width='76' height='90' viewBox='0 0 80 96' fill='none'
-           style='animation:float 3.5s ease-in-out infinite;filter:drop-shadow(0 0 16px rgba(231,76,60,0.85))'>
+    <div style='text-align:center;padding:12px 0 10px'>
+      <svg width='72' height='85' viewBox='0 0 80 96' fill='none'
+           style='filter:drop-shadow(0 0 16px rgba(231,76,60,0.85))'>
         <path d='M40 8C40 8 8 44 8 64C8 82 22 88 40 88C58 88 72 82 72 64C72 44 40 8 40 8Z'
               fill='url(#sg)'/>
         <circle cx='30' cy='60' r='6' fill='white' opacity='.95'/>
@@ -63,7 +80,7 @@ with st.sidebar:
         </defs>
       </svg>
       <div style='font-family:"Playfair Display",serif;font-size:24px;
-                  font-weight:900;color:white;margin-top:10px;letter-spacing:1px'>BloodSetu</div>
+                  font-weight:900;color:white;margin-top:8px;letter-spacing:1px'>BloodSetu</div>
       <div style='font-size:10px;color:rgba(255,255,255,0.45);
                   letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-top:2px'>
         Connect Blood. Save Lives.</div>
@@ -72,52 +89,46 @@ with st.sidebar:
 
     st.markdown("""
     <div style='height:1px;background:linear-gradient(90deg,transparent,
-    rgba(231,76,60,0.4),transparent);margin:8px 0 16px'></div>
+    rgba(231,76,60,0.4),transparent);margin:4px 0 12px'></div>
     """, unsafe_allow_html=True)
 
-    # Navigation pages map
-    pages = {
-        "🏠 Home":              "Home",
-        "🔍 Find Blood":        "Find Blood",
-        "✅ Eligibility Check": "Eligibility",
-        "🗺️ Map View":          "Map",
-        "📊 Analytics":         "Analytics",
-        "🏆 Daata Wall":        "Daata Wall",
-        "🩸 Donor Portal":      "Donor",
-        "🏥 Hospital Portal":   "Hospital",
-        "🏦 Blood Bank Portal": "Blood Bank",
-        "🏕️ Blood Camp Portal": "Camp",
-        "👑 Admin Panel":       "Admin",
-    }
+    # Navigation menu
+    st.caption("NAVIGATION MENU")
+    page_labels = list(PAGES.keys())
+    
+    # Calculate index
+    current_key = st.session_state.current_page
+    current_label = [lbl for lbl, val in PAGES.items() if val == current_key]
+    default_idx = page_labels.index(current_label[0]) if current_label else 0
 
-    if "current_page" not in st.session_state:
-        st.session_state.current_page = "Home"
+    selected_label = st.radio(
+        "Navigation",
+        page_labels,
+        index=default_idx,
+        label_visibility="collapsed",
+        key="main_nav_radio"
+    )
 
-    for label, page_key in pages.items():
-        is_active = st.session_state.current_page == page_key
-        if st.button(
-            label,
-            key=f"nav_{page_key}",
-            use_container_width=True,
-        ):
-            st.session_state.current_page = page_key
-            st.rerun()
+    new_page_key = PAGES[selected_label]
+    if new_page_key != st.session_state.current_page:
+        st.session_state.current_page = new_page_key
+        st.rerun()
 
     st.markdown("""
     <div style='height:1px;background:linear-gradient(90deg,transparent,
     rgba(231,76,60,0.3),transparent);margin:16px 0 14px'></div>
     """, unsafe_allow_html=True)
 
-    # Login status card
+    # Login Status
     if st.session_state.get("logged_in"):
         user = st.session_state.get("user", {})
         role = st.session_state.get("role", "")
         st.markdown(f"""
         <div style='background:rgba(46,204,113,0.08);border:1px solid rgba(46,204,113,0.25);
-        border-radius:12px;padding:12px;text-align:center;backdrop-filter:blur(8px)'>
-          <p style='color:#2ecc71;font-weight:600;font-size:11px;margin:0;letter-spacing:1px;text-transform:uppercase'>
+        border-radius:10px;padding:10px;text-align:center'>
+          <p style='color:#2ecc71;font-weight:600;font-size:10px;margin:0;letter-spacing:1px;text-transform:uppercase'>
           ✅ Logged in as</p>
-          <p style='color:white;font-size:14px;font-weight:700;margin:3px 0 1px'>
+          <p style='color:white;font-size:13px;font-weight:700;margin:2px 0 1px'>
           {user.get("username","")}</p>
           <p style='color:rgba(255,255,255,0.5);font-size:10px;
                     text-transform:uppercase;margin:0;font-weight:600'>{role}</p>
@@ -136,7 +147,7 @@ with st.sidebar:
         Seekers need no login 🩸<br><span style='color:rgba(255,255,255,0.25)'>Login for donors & providers</span></p>
         """, unsafe_allow_html=True)
 
-    # SOS quick button
+    # SOS Quick Button
     st.markdown("<br>", unsafe_allow_html=True)
     if st.button("🚨 EMERGENCY SOS", use_container_width=True, key="sidebar_sos"):
         st.session_state.current_page = "Find Blood"
@@ -144,7 +155,7 @@ with st.sidebar:
 
     # Footer
     st.markdown("""
-    <div style='margin-top:24px;text-align:center;font-size:10px;
+    <div style='margin-top:20px;text-align:center;font-size:10px;
                 color:rgba(255,255,255,0.25);line-height:1.6'>
       BloodSetu · Parul University<br>
       BCA (Hons) · Mini Project-II<br>
@@ -156,15 +167,15 @@ with st.sidebar:
 page = st.session_state.current_page
 
 if page == "Home":
-    from pages.home import show
+    from views.home import show
     show()
 
 elif page == "Find Blood":
-    from pages.find_blood import show
+    from views.find_blood import show
     show()
 
 elif page == "Eligibility":
-    from pages.eligibility import show
+    from views.eligibility import show
     show()
 
 elif page == "Map":
@@ -199,7 +210,7 @@ elif page == "Map":
         camps=city_camps or None,
         zoom=12,
     )
-    show_map(m, height=520)
+    show_map(m, height=500)
 
     col1, col2, col3 = st.columns(3)
     col1.metric("🏥 Hospitals", len(city_hospitals))
@@ -207,29 +218,29 @@ elif page == "Map":
     col3.metric("🏕️ Camps", len(city_camps))
 
 elif page == "Analytics":
-    from pages.analytics import show
+    from views.analytics import show
     show()
 
 elif page == "Daata Wall":
-    from pages.daata_wall import show
+    from views.daata_wall import show
     show()
 
 elif page == "Donor":
-    from pages.donor import show
+    from views.donor import show
     show()
 
 elif page == "Hospital":
-    from pages.hospital import show
+    from views.hospital import show
     show()
 
 elif page == "Blood Bank":
-    from pages.blood_bank import show
+    from views.blood_bank import show
     show()
 
 elif page == "Camp":
-    from pages.camp import show
+    from views.camp import show
     show()
 
 elif page == "Admin":
-    from pages.admin import show
+    from views.admin import show
     show()
