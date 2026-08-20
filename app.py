@@ -18,6 +18,12 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+# Export handler / app variable for serverless deployment
+app = st
+application = st
+handler = st
+
+
 # ── LOAD CSS ───────────────────────────────────────────────
 css_path = os.path.join("assets", "styles.css")
 if os.path.exists(css_path):
