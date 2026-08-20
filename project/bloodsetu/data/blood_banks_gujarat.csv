@@ -1,0 +1,16 @@
+id,name,doctor_name,city,area,phone,groups_available,is_verified
+1,Red Cross Blood Bank Vadodara,Dr. Leena Joshi,Vadodara,Sayajigunj,02652361234,"A+,A-,B+,B-,O+,O-,AB+,AB-",1
+2,Lions Blood Bank Vadodara,Dr. Amit Shah,Vadodara,Fatehgunj,02652421234,"A+,B+,O+,O-,AB+",1
+3,Rotary Blood Bank Ahmedabad,Dr. Neha Patel,Ahmedabad,Navrangpura,07926302040,"A+,A-,B+,B-,O+,O-,AB+,AB-",1
+4,Lions Club Blood Bank Surat,Dr. Vikram Rao,Surat,Nanpura,02612461234,"A+,B+,O+,O-,AB+",1
+5,Indian Red Cross Blood Bank Rajkot,Dr. Girish Trivedi,Rajkot,Kalawad Road,02812244234,"A+,A-,B+,B-,O+,O-,AB+,AB-",1
+6,Surat Blood Bank,Dr. Anjali Mehta,Surat,Adajan,02612571234,"A+,B+,O+,AB+",1
+7,Ahmedabad Blood Centre,Dr. Suresh Kapoor,Ahmedabad,Maninagar,07922132040,"A+,B+,O+,O-,AB+,AB-",1
+8,Vadodara Blood Centre,Dr. Rekha Shah,Vadodara,Alkapuri,02652481234,"B+,O+,O-,AB+",1
+9,Gandhinagar Blood Bank,Dr. Nilesh Patel,Gandhinagar,Sector 16,07922652040,"A+,B+,O+,AB+",1
+10,Rajkot Blood Centre,Dr. Pooja Trivedi,Rajkot,University Road,02812344234,"A+,B+,O+,AB+,AB-",1
+11,Bhavnagar Blood Bank,Dr. Raju Mehta,Bhavnagar,Ghogha Circle,02782421234,"A+,B+,O+",1
+12,Jamnagar Blood Centre,Dr. Kavita Shah,Jamnagar,Bedi Gate,02882671234,"A+,B+,O+,AB+",1
+13,Anand Blood Bank,Dr. Dinesh Patel,Anand,Anand Town,02692651234,"A+,B+,O+,O-",1
+14,Nadiad Blood Centre,Dr. Shreya Joshi,Nadiad,Nadiad Town,02682651234,"A+,B+,O+",1
+15,Mehsana Blood Bank,Dr. Harsh Trivedi,Mehsana,Mehsana Town,02762651234,"A+,B+,O+,AB+",1

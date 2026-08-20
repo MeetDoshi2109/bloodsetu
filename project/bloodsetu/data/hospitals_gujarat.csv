@@ -1,0 +1,21 @@
+id,name,doctor_name,address,city,area,phone,blood_available,emergency_24x7,is_verified
+1,SSG Hospital,Dr. Rajesh Mehta,Raopura Vadodara,Vadodara,Raopura,02652225555,"A+,A-,B+,B-,O+,O-,AB+,AB-",1,1
+2,Sterling Hospital,Dr. Priya Shah,Race Course Road Vadodara,Vadodara,Race Course,02652991000,"A+,B+,O+,O-,AB+",1,1
+3,Bhailal Amin General Hospital,Dr. Amit Patel,Gorwa Vadodara,Vadodara,Gorwa,02652397777,"A+,B+,O+,AB+",1,1
+4,Baroda Medical College Hospital,Dr. Sunita Verma,Anand Road Vadodara,Vadodara,Fatehgunj,02652435555,"A+,A-,B+,O+,O-,AB+",1,1
+5,Dhiraj Hospital,Dr. Mahesh Solanki,Waghodia Road Vadodara,Vadodara,Waghodia Road,02652368888,"B+,O+,AB+",1,1
+6,Civil Hospital Ahmedabad,Dr. Neha Kapoor,Asarwa Ahmedabad,Ahmedabad,Asarwa,07922683721,"A+,A-,B+,B-,O+,O-,AB+,AB-",1,1
+7,VS Hospital Ahmedabad,Dr. Vikram Rao,Ellisbridge Ahmedabad,Ahmedabad,Ellis Bridge,07926576101,"A+,B+,O+,O-,AB+",1,1
+8,Zydus Hospital Ahmedabad,Dr. Leena Joshi,SG Highway Ahmedabad,Ahmedabad,SG Highway,07966161616,"A+,A-,B+,O+,AB+,AB-",1,1
+9,Apollo Hospital Ahmedabad,Dr. Suresh Patel,Plot No 1A Bhat Ahmedabad,Ahmedabad,Satellite,07971072000,"A+,B+,O+,O-,AB+",1,1
+10,CIMS Hospital Ahmedabad,Dr. Rekha Trivedi,Science City Road Ahmedabad,Ahmedabad,Prahlad Nagar,07926851000,"A+,B+,B-,O+,O-,AB+",1,1
+11,Kiran Hospital Surat,Dr. Dinesh Shah,Majura Gate Surat,Surat,Athwa,02612474000,"A+,B+,O+,AB+",1,1
+12,Nirali Memorial Hospital Surat,Dr. Anjali Patel,Pal Surat,Surat,Pal,02612631000,"A+,B+,O+,O-",1,1
+13,Yashoda Hospital Surat,Dr. Ramesh Mehta,Adajan Surat,Surat,Adajan,02612781000,"B+,O+,AB+",1,1
+14,Apple Hospital Surat,Dr. Kavita Joshi,Vesu Surat,Surat,Vesu,02612691000,"A+,B+,O+,AB+,AB-",1,1
+15,PDU Medical College Hospital Rajkot,Dr. Girish Trivedi,Kalawad Road Rajkot,Rajkot,Kalawad Road,02812244771,"A+,A-,B+,B-,O+,O-,AB+,AB-",1,1
+16,Sterling Hospital Rajkot,Dr. Pooja Shah,150 Feet Ring Road Rajkot,Rajkot,150 Feet Ring Road,02812490444,"A+,B+,O+,AB+",1,1
+17,GMERS Civil Hospital Gandhinagar,Dr. Nilesh Patel,Sector 12 Gandhinagar,Gandhinagar,Sector 11,07922322811,"A+,B+,O+,O-,AB+",1,1
+18,Synergy Hospital Ahmedabad,Dr. Harsh Mehta,Navrangpura Ahmedabad,Ahmedabad,Navrangpura,07926306000,"A+,B+,O+",0,1
+19,New Civil Hospital Surat,Dr. Shreya Patel,Majura Gate Surat,Surat,Katargam,02612470000,"A+,A-,B+,B-,O+,O-,AB+,AB-",1,1
+20,Bhavnagar General Hospital,Dr. Raju Trivedi,Crescent Circle Bhavnagar,Bhavnagar,Ghogha Circle,02782422100,"A+,B+,O+,AB+",1,1
