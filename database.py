@@ -8,7 +8,7 @@ import hashlib
 from datetime import datetime, date, timedelta
 import os
 
-DB_PATH = "bloodsetu.db"
+DB_PATH = os.environ.get("DB_PATH", "bloodsetu.db")
 
 
 def get_conn():

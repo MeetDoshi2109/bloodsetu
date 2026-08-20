@@ -1,15 +1,21 @@
 import axios from 'axios'
 
-const api = axios.create({ baseURL: '/api' })
+// In development Vite proxies /api → localhost:8000.
+// On Vercel both the static frontend and /api/* serverless function
+// live on the same domain, so relative /api works in both environments.
+const api = axios.create({
+  baseURL: '/api',
+  timeout: 30000,
+})
 
-// Attach token automatically
+// Attach Bearer token automatically
 api.interceptors.request.use(cfg => {
   const tok = localStorage.getItem('bs_token')
   if (tok) cfg.headers.Authorization = `Bearer ${tok}`
   return cfg
 })
 
-// On 401 clear token
+// On 401 clear local auth state
 api.interceptors.response.use(
   r => r,
   err => {
