@@ -4,7 +4,7 @@
 Write-Host "Starting BloodSetu..." -ForegroundColor Cyan
 
 # Backend
-Start-Process powershell -ArgumentList "-NoExit", "-Command", "uvicorn api:app --reload --port 8000" -WorkingDirectory $PSScriptRoot
+Start-Process powershell -ArgumentList "-NoExit", "-Command", "uvicorn backend:app --reload --port 8000" -WorkingDirectory $PSScriptRoot
 
 # Frontend
 Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd frontend; npm run dev" -WorkingDirectory $PSScriptRoot
