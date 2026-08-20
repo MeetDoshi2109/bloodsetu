@@ -2,19 +2,19 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from './context/AuthContext'
 
 // Pages
-import Home          from './pages/Home'
-import FindBlood     from './pages/FindBlood'
-import Eligibility   from './pages/Eligibility'
-import Analytics     from './pages/Analytics'
-import DaataWall     from './pages/DaataWall'
-import Login         from './pages/Login'
-import Register      from './pages/Register'
-import Admin         from './pages/Admin'
-import DonorPortal   from './pages/portals/DonorPortal'
-import HospitalPortal from './pages/portals/HospitalPortal'
-import BloodBankPortal from './pages/portals/BloodBankPortal'
-import CampPortal    from './pages/portals/CampPortal'
-import Layout        from './components/layout/Layout'
+import Home             from './pages/Home'
+import FindBlood        from './pages/FindBlood'
+import Eligibility      from './pages/Eligibility'
+import Analytics        from './pages/Analytics'
+import DaataWall        from './pages/DaataWall'
+import Login            from './pages/Login'
+import Register         from './pages/Register'
+import Admin            from './pages/Admin'
+import DonorPortal      from './pages/portals/DonorPortal'
+import HospitalPortal   from './pages/portals/HospitalPortal'
+import BloodBankPortal  from './pages/portals/BloodBankPortal'
+import CampPortal       from './pages/portals/CampPortal'
+import Layout           from './components/layout/Layout'
 
 function ProtectedRoute({ children, role }) {
   const { user } = useAuth()
@@ -27,10 +27,11 @@ function NotFound() {
   return (
     <Layout>
       <div className="text-center py-32 space-y-4">
-        <p className="text-8xl font-heading font-black text-blood-900">404</p>
+        <p className="font-heading font-black text-8xl" style={{ color: 'rgba(192,57,43,0.25)' }}>404</p>
         <h1 className="text-2xl font-heading font-bold text-white">Page not found</h1>
         <p className="text-white/40 text-sm">The page you're looking for doesn't exist.</p>
-        <a href="/" className="inline-block mt-4 px-6 py-2.5 rounded-xl bg-blood-700/30 text-blood-300 border border-blood-700/40 text-sm font-semibold hover:bg-blood-700/50 transition-colors cursor-pointer">
+        <a href="/" className="inline-block mt-4 px-6 py-2.5 rounded-xl text-sm font-semibold text-blood-300 cursor-pointer"
+          style={{ background: 'rgba(192,57,43,0.15)', border: '1px solid rgba(192,57,43,0.3)' }}>
           Go Home
         </a>
       </div>
@@ -50,7 +51,7 @@ export default function App() {
       <Route path="/login"       element={<Login />} />
       <Route path="/register"    element={<Register />} />
 
-      {/* Portals */}
+      {/* Portals — redirect to login if not authenticated, portal handles role setup internally */}
       <Route path="/portal/donor"      element={<DonorPortal />} />
       <Route path="/portal/hospital"   element={<HospitalPortal />} />
       <Route path="/portal/blood-bank" element={<BloodBankPortal />} />
