@@ -10,9 +10,8 @@ import { BloodGroupBadge } from '../components/ui/Badge'
 import Alert from '../components/ui/Alert'
 import { Input, Select } from '../components/ui/Input'
 import MapView, { MapLegend } from '../components/shared/MapView'
+import { GUJARAT_CITIES, GUJARAT_AREAS, ALL_BLOOD_GROUPS as BLOOD_GROUPS } from '../data/gujarat'
 import api from '../api/client'
-
-const BLOOD_GROUPS = ['A+','A-','B+','B-','O+','O-','AB+','AB-']
 
 function TierLabel({ tier }) {
   const map = {
@@ -194,8 +193,6 @@ export default function FindBlood() {
   const location = useLocation()
   const init     = location.state || {}
 
-  const [cities,  setCities]  = useState([])
-  const [areas,   setAreas]   = useState([])
   const [form,    setForm]    = useState({
     blood_group: init.blood_group || '',
     city:        init.city        || '',
@@ -211,17 +208,12 @@ export default function FindBlood() {
   const [error,    setError]    = useState('')
   const [showMap,  setShowMap]  = useState(false)
 
-  useEffect(() => {
-    api.get('/ref/cities').then(r => setCities(r.data)).catch(() => {})
-  }, [])
+  const areas = form.city ? (GUJARAT_AREAS[form.city] || []) : []
 
-  useEffect(() => {
-    if (form.city) {
-      api.get(`/ref/areas/${form.city}`)
-        .then(r => { setAreas(r.data); if (!form.area) setForm(f => ({ ...f, area: r.data[0] || '' })) })
-        .catch(() => {})
-    }
-  }, [form.city])
+  const handleCityChange = (city) => {
+    const cityAreas = GUJARAT_AREAS[city] || []
+    setForm(f => ({ ...f, city, area: cityAreas[0] || '' }))
+  }
 
   // Auto-search if navigated with state
   useEffect(() => {
@@ -292,9 +284,9 @@ export default function FindBlood() {
             <option value="">Select</option>
             {BLOOD_GROUPS.map(g => <option key={g}>{g}</option>)}
           </Select>
-          <Select label="City" value={form.city} onChange={e => set('city', e.target.value)} required>
+          <Select label="City" value={form.city} onChange={e => handleCityChange(e.target.value)} required>
             <option value="">Select City</option>
-            {cities.map(c => <option key={c}>{c}</option>)}
+            {GUJARAT_CITIES.map(c => <option key={c}>{c}</option>)}
           </Select>
           <Select label="Area" value={form.area} onChange={e => set('area', e.target.value)} required disabled={!areas.length}>
             <option value="">Select Area</option>

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   Heart, Clock, History, AlertTriangle, Trophy, Settings,
-  CheckCircle, Phone, MapPin, Calendar, Droplets, User, Bell
+  CheckCircle, Phone, Calendar, Droplets, User, Bell
 } from 'lucide-react'
 import Layout, { PageHeader } from '../../components/layout/Layout'
 import { Tabs } from '../../components/ui/Tabs'
@@ -12,6 +12,7 @@ import { Input, Select, Checkbox } from '../../components/ui/Input'
 import Alert from '../../components/ui/Alert'
 import { BloodGroupBadge, DonorBadge, StatusBadge } from '../../components/ui/Badge'
 import { useAuth } from '../../context/AuthContext'
+import { GUJARAT_CITIES, GUJARAT_AREAS, ALL_BLOOD_GROUPS } from '../../data/gujarat'
 import api from '../../api/client'
 
 const ALL_BADGES = [
@@ -31,14 +32,12 @@ function DonorRegistration({ onDone }) {
   const [step,  setStep]  = useState(user ? 'profile' : 'account')
   const [acct,  setAcct]  = useState({ username:'', password:'', phone:'' })
   const [prof,  setProf]  = useState({ name:'', blood_group:'', city:'', area:'', phone:'' })
-  const [cities, setCities] = useState([])
-  const [areas,  setAreas]  = useState([])
   const [err,   setErr]   = useState('')
   const [loading, setLoading] = useState(false)
   const { register } = useAuth()
 
-  useEffect(() => { api.get('/ref/cities').then(r => setCities(r.data)) }, [])
-  useEffect(() => { if (prof.city) api.get(`/ref/areas/${prof.city}`).then(r => setAreas(r.data)) }, [prof.city])
+  const profAreas = prof.city ? (GUJARAT_AREAS[prof.city] || []) : []
+  const handleProfCity = (city) => setProf(p => ({ ...p, city, area: (GUJARAT_AREAS[city] || [])[0] || '' }))
 
   const handleAccount = async e => {
     e.preventDefault(); setErr('')
